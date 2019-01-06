@@ -24,21 +24,19 @@ void main(){
     vec2 uv = vUv;
     vec2 uv2 = uv;
 
-    uv2 -= vPoint;
-    uv2 += vPoint/scale;
-    uv2 *= scale;
+uv2 -= vPoint;
+  uv2 += vPoint/scale;
+uv2 *= scale;
 
-    vec4 current = texture2D(tex1, uv);
-    vec4 fb = texture2D(tex0, uv2);
+    vec4 fb = vec4(0.0);
+    vec4 current = vec4(0.0);
+    vec4 tmp;
 
-    // color = mix(current,fb,feedback);
-    if(current.a == 0.0){
-      color = fb * feedback;
-    }else{
-      color = current;
-    }
+    current = texture2D(tex1, uv);
+    fb = texture2D(tex0, uv2);
+    color = current + (fb * feedback);
 
-    gl_FragColor = color;
+    gl_FragColor = vec4(color.rgb,1.0);
 }
 `;
 

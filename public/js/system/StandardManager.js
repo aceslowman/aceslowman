@@ -84,7 +84,9 @@ export default class StandardManager {
 
   update() {
     this.updateEntities();
+  }
 
+  render(){
     /*
       render both the main scene, and the debug/ui over scene
     */
@@ -99,11 +101,14 @@ export default class StandardManager {
   }
 
   onWindowResize() {
-    this.width = window.innerWidth;
+    for (let i = 0; i < this.entities.length; i++) {
+      this.entities[i].onWindowResize();
+    }
+
+    this.width  = window.innerWidth;
     this.height = window.innerHeight;
 
-    this.camera.getCamera().aspect = this.width / this.height;
-    this.camera.getCamera().updateProjectionMatrix();
+    this.camera.onWindowResize();
 
     this.renderer.setSize(this.width, this.height);
   }

@@ -1,8 +1,9 @@
 import * as THREE from "three";
 import StandardManager from "./StandardManager";
+import { Earcut } from '../../../node_modules/three/examples/js/postprocessing/EffectComposer.js';
 import * as feedback from '../shaders/feedback';
 
-export default class FeedbackManager extends StandardManager{
+export default class PostManager extends StandardManager{
   constructor(options){
     super(options);
 
@@ -53,8 +54,8 @@ export default class FeedbackManager extends StandardManager{
       this.feedbackUniforms = {
           tex0: { value: this.interTarget.texture },
           tex1: { value: this.mainTarget.texture },
-          feedback: { value: 1.0 },
-          scale: { value: 1.02 },
+          feedback: { value: 0.98 },
+          scale: { value: 0.98 },
           vPoint: { value: [0.5,0.5] }
       };
 
@@ -74,6 +75,47 @@ export default class FeedbackManager extends StandardManager{
 
       const quad = new THREE.Mesh( geometry, material );
       this.feedbackScene.add( quad );
+    }
+
+    // ============================================================================
+    const sharpen = () => {
+      sharpenScene = new THREE.Scene();
+
+      sharpenUniforms = {
+        tex0: { value: textureB.texture },
+        width: { value: 0.008 }
+      }
+
+      sharpenShaderMaterial = new THREE.ShaderMaterial( {
+        uniforms: sharpenUniforms,
+        vertexShader: sharpenShader.vert,
+        fragmentShader: sharpenShader.frag
+      } );
+
+      var plane2 = new THREE.PlaneBufferGeometry( 2., 2.);
+      var sharpenObject = new THREE.Mesh( plane2, sharpenShaderMaterial );
+      sharpenScene.add(sharpenObject);
+    }
+
+    // ============================================================================
+    const barrelBlurChroma = () => {
+      barrelScene = new THREE.Scene();
+
+      barrelUniforms = {
+        tex0: { value: textureC.texture },
+        barrelPower: { value: 0.4 },
+        zoom: { value: 1.0 }
+      }
+
+      barrelShaderMaterial = new THREE.ShaderMaterial( {
+        uniforms: barrelUniforms,
+        vertexShader: barrelBlurShader.vert,
+        fragmentShader: barrelBlurShader.frag
+      } );
+
+      var plane3 = new THREE.PlaneBufferGeometry( 2., 2.);
+      var barrelObject = new THREE.Mesh( plane3, barrelShaderMaterial );
+      barrelScene.add(barrelObject);
     }
 
     /*

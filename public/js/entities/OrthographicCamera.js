@@ -18,22 +18,22 @@ export default class OrthoCamera{
     this.useControls = true;
 
     this.camera = new THREE.OrthographicCamera(
-      this.manager.width / - 2,
-      this.manager.width / 2,
-      this.manager.height / 2,
+      this.manager.width  / - 2,
+      this.manager.width  /   2,
+      this.manager.height /   2,
       this.manager.height / - 2,
-      1,
+      0.1,
       2000
     );
 
     this.zoom = 1;
 
-    this.camera.position.z = 500;
+    this.camera.position.z = 1;
     this.camera.zoom = this.zoom;
     this.camera.updateProjectionMatrix();
 
     this.setupGUI();
-    this.setupOrbit();
+    // this.setupOrbit();
   }
 
   update(){
@@ -83,7 +83,14 @@ export default class OrthoCamera{
     this.orbitControls.minDistance = 0.01;
     this.orbitControls.maxDistance = 1000;
     this.orbitControls.enableRotate = false;
+  }
 
+  onWindowResize(){
+    this.camera.left = -this.manager.width / 2;
+    this.camera.right = this.manager.width / 2;
+    this.camera.top = this.manager.height / 2;
+    this.camera.bottom = -this.manager.height / 2;
+    this.camera.updateProjectionMatrix();
   }
 
   getCamera(){

@@ -92,6 +92,11 @@ export default class Camera{
     // this.orbitControls.autoRotate = true;
   }
 
+  onWindowResize(){
+    this.camera.aspect = this.width / this.height;
+    this.camera.updateProjectionMatrix();
+  }
+
   getCamera(){
     return this.camera;
   }

@@ -31,4 +31,7 @@ export default class StandardEntity{
     this.manager.addEntity(this);
   }
 
+  onWindowResize(){
+    
+  }
 }

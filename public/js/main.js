@@ -1,20 +1,24 @@
 import * as THREE from "three";
 
 import StandardManager from "./system/StandardManager";
-import FeedbackManager from "./system/FeedbackManager";
+import PostStack from "./system/PostStack";
 import Capture from "./utilities/Capture";
 import Debug from "./utilities/Debug";
-import Box from "./entities/Box";
+import MainText from "./entities/MainText";
 import Capsule from "./entities/Capsule";
-import PointLight from "./entities/PointLight";
+import OrthographicCamera from "./entities/OrthographicCamera";
 
-let manager, debug, capturer, box, camera, capsule, light;
+let manager, debug, capturer, box, camera, capsule, light, text, post;
 
 const setup = () => {
   manager = new StandardManager();
 
-  capsule = new Capsule(manager);
-  light = new PointLight(manager);
+  camera = new OrthographicCamera(manager);
+  manager.setCamera(camera);
+
+  text = new MainText(manager);
+
+  post = new PostStack(manager);
 
   if(process.env.DEVELOPMENT){
     debug = new Debug(manager, {
@@ -37,6 +41,7 @@ const render = () => {
 
   if(process.env.DEVELOPMENT) debug.stats.begin();
   manager.update();
+  post.render();
   if(process.env.DEVELOPMENT) debug.stats.end();
 
   if(process.env.DEVELOPMENT) capturer.capture( manager.canvas );
