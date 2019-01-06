@@ -24,16 +24,16 @@ void main(){
     vec2 uv = vUv;
     vec2 uv2 = uv;
 
-uv2 -= vPoint;
-  uv2 += vPoint/scale;
-uv2 *= scale;
+    uv2 -= vPoint;
+    uv2 += vPoint/scale;
+    uv2 *= scale;
 
     vec4 fb = vec4(0.0);
     vec4 current = vec4(0.0);
     vec4 tmp;
 
-    current = texture2D(tex1, uv);
-    fb = texture2D(tex0, uv2);
+    current = texture2D(tex0, uv);
+    fb = texture2D(tex1, uv2);
     color = current + (fb * feedback);
 
     gl_FragColor = vec4(color.rgb,1.0);

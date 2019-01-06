@@ -1,121 +1,43 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title></title>
-    <style>
-      body{
-        padding:0px;
-        margin:0px;
-      }
-      canvas{
-        display:block;
-      }
-    </style>
-    <link rel="stylesheet" href="../css/style.css">
-  </head>
-  <body>
-    <noscript>
-      You need to enable JavaScript to see anything!
-    </noscript>
-    <div class="container">
-      <div class="nav">
-        <ul>
-          <li><a href="#theta"><h2>Θ (2018)</h2></a></li>
-          <li><a href="#waves"><h2>WAVES (2018)</h2></a></li>
-          <li><a href="#weight"><h2>Weight (2018) (WIP)</h2></a></li>
-        </li>
-      </div>
-      <div class="content">
-        <div class="project">
-          <a id="theta"></a>
-          <!-- <img src="./img/rings.png"> -->
-          <div style="width:66%; float:left;">
-          <h2>Θ (2018)</h2>
-          <p>
-            <h3>A simple monophonic synthesizer built for Ableton, using Max for
-              Live.</h3>
-          </p>
-          <p>
-            I wanted to put together a synthesizer with which harmony could be
-            explored through geometry, allowing for complex sounds to come from
-            the arrangement of points around a circle.
-          </p>
-          <p>
-            The synthesis is implements <em>multiple carrier fm synthesis</em>.
-            It began as an experiment that I built for the browser, which can be
-            found <a href="http://ringchords.austinslominski.com">here</a>
-          </p>
-          <p>
-          <a href="https://github.com/aceslowman/m4l_rings">Download from Github</a>
-          </p>
-          </div>
-          <div style="width:33%; float:left; text-align:right;">
 
-          </div>
-          <div class="clear"></div>
-        </div>
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <style>
 
-        <div class="project">
-          <a id="waves"></a>
-          <div style="width:66%; float:left;">
-          <h2>Waves (2018)</h2>
-          <p>
-            <h3>A visual oilwave generator for ableton, using Jitter, OpenGL, and Max for Live</h3>
-          </p>
-          <p>
-            I wanted to put together a synthesizer with which harmony could be
-            explored through geometry, allowing for complex sounds to come from
-            the arrangement of points around a circle.
-          </p>
-          <p>
-            The synthesis is implements <em>multiple carrier fm synthesis</em>.
-            It began as an experiment that I built for the browser, which can be
-            found <a href="http://ringchords.austinslominski.com">here</a>
-          </p>
-          <p>
-          <a href="https://github.com/aceslowman/m4l_rings">Download from Github</a>
-          </p>
-          </div>
-          <div style="width:33%; float:left; text-align:right;">
+  </style>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
 
-          </div>
-          <div class="clear"></div>
-        </div>
-
-        <div class="project">
-          <a id="weight"></a>
-          <div style="width:66%; float:left;">
-          <h2>Weight (2018) (WIP)</h2>
-          <p>
-            <h3>Work In Progress</h3>
-          </p>
-          <hr>
-          <ul>
-            <li><a href="weight_no_more">Feedback Study</a></li>
-            <li><a href="weight_no_more/feedback.html">Writeup on Feedback</a></li>
-          </ul>
-          <hr>
-          <p>
-          <a href="https://github.com/aceslowman/weight_no_more">Github</a>
-          </p>
-          </div>
-          <div style="width:33%; float:right;">
-            <a href="weight_no_more"><img src="./img/feedbackvortex.gif" /></a>
-          </div>
-          <div class="clear"></div>
-        </div>
-      </div>
-
-      <!--
-        Not ideal, but CCapture is currently not bundled correctly for NPM.
-        https://github.com/spite/ccapture.js/issues/36
-        https://github.com/spite/ccapture.js/issues/77 (Mine)
-      -->
-      <!-- <script src="js/libs/CCapture.all.min.js"></script> -->
-
-      <script src='js/dist/common.bundle.js'></script> <!-- Only for dev -->
-  		<script src='js/dist/bundle.js'></script>
+<body>
+  <noscript>
+    You need to enable JavaScript to see anything!
+  </noscript>
+  <div class="container">
+    <div class="index">
+      <a id="index"></a>
+      <h2>Table of Contents</h2>
+      <ul>
+        <li>A Vulgar Language</li>
+        <li>Theta</li>
+        <li>Waves</li>
+        <li>ofxGrowth</li>
+        <li>Procedural Tools</li>
+        <li>BEGINNER/NAIVE</li>
+        <li>VR Experiments</li>
+        <li>Feedback Experiments</li>
+        <li>Jit Hausu</li>
+        <li>Negative Symbols</li>
+        <li>Doom</li>
+        <li>Arclite</li>
+        <li>RingChord</li>
+      </ul>
+      <img src="http://lorempixel.com/200/800" />
     </div>
-  </body>
+  </div>
+  <script src='js/dist/common.bundle.js'></script> <!-- Only for dev -->
+  <script src='js/dist/bundle.js'></script>
+</body>
+
 </html>

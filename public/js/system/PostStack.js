@@ -15,29 +15,30 @@ export default class PostStack {
     this.setupFinalComposer();
   }
 
-setupInputComposer(){
-  this.inputTarget = new THREE.WebGLRenderTarget( this.manager.width, this.manager.height );
+  setupInputComposer(){
+    this.inputTarget = new THREE.WebGLRenderTarget( this.manager.width, this.manager.height );
 
-  this.inputComposer = new THREE.EffectComposer(this.manager.renderer, this.inputTarget);
-  this.inputComposer.setSize(this.manager.width, this.manager.height);
+    this.inputComposer = new THREE.EffectComposer(this.manager.renderer, this.inputTarget);
+    this.inputComposer.setSize(this.manager.width, this.manager.height);
 
-  let mat_feedback = new THREE.ShaderMaterial({
-    uniforms: {
-      tex1: { value: this.inputTarget.texture },
-      feedback: { value: 0.9 },
-      scale: { value: 0.992 },
-      vPoint: { value: [0.5,0.5] }
-    },
-    vertexShader: feedback.vert,
-    fragmentShader: feedback.frag
-  });
+    this.shader_feedback = new THREE.ShaderMaterial({
+      uniforms: {
+        tex1: { value: this.inputTarget.texture },
+        feedback: { value: 0.9 },
+        scale: { value: 0.992 },
+        vPoint: { value: [0.5,0.5] }
+      },
+      vertexShader: feedback.vert,
+      fragmentShader: feedback.frag
+    });
 
-  const inputPass = new THREE.RenderPass(this.manager.scene, this.manager.camera.getCamera());
-  const feedbackPass = new THREE.ShaderPass(mat_feedback, "feedback");
+    const inputPass = new THREE.RenderPass(this.manager.scene, this.manager.camera.getCamera());
+    const feedbackPass = new THREE.ShaderPass(this.shader_feedback, "feedback");
+    feedbackPass.needsSwap = true;
 
-  this.inputComposer.addPass(inputPass);
-  this.inputComposer.addPass(feedbackPass);
-}
+    this.inputComposer.addPass(inputPass);
+    this.inputComposer.addPass(feedbackPass);
+  }
 
   setupIntermediateComposer(){
     this.intermediateTarget = new THREE.WebGLRenderTarget( this.manager.width, this.manager.height );
@@ -45,7 +46,7 @@ setupInputComposer(){
     this.intermediateComposer = new THREE.EffectComposer(this.manager.renderer, this.intermediateTarget);
     this.intermediateComposer.setSize(this.manager.width, this.manager.height);
 
-    let mat_sharpen = new THREE.ShaderMaterial({
+    this.shader_sharpen = new THREE.ShaderMaterial({
       uniforms: {
         width: { value: 0.8 }
       },
@@ -54,7 +55,7 @@ setupInputComposer(){
     })
 
     const inputPass  = new THREE.TexturePass(this.inputTarget.texture, 1.0);
-    const sharpenPass  = new THREE.ShaderPass(mat_sharpen, "sharpen");
+    const sharpenPass  = new THREE.ShaderPass(this.shader_sharpen, "sharpen");
 
     this.intermediateComposer.addPass(inputPass);
     this.intermediateComposer.addPass(sharpenPass);
@@ -64,7 +65,7 @@ setupInputComposer(){
     this.finalComposer = new THREE.EffectComposer(this.manager.renderer);
     this.finalComposer.setSize(this.manager.width, this.manager.height);
 
-    let mat_chroma = new THREE.ShaderMaterial({
+    this.shader_chroma = new THREE.ShaderMaterial({
       uniforms: {
         barrelPower: { value: 0.4 },
         zoom: { value: 1.0 }
@@ -74,7 +75,7 @@ setupInputComposer(){
     })
 
     const inputPass  = new THREE.TexturePass(this.inputTarget.texture, 1.0);
-    const chromaPass = new THREE.ShaderPass(mat_chroma, "chroma");
+    const chromaPass = new THREE.ShaderPass(this.shader_chroma, "chroma");
 
     chromaPass.renderToScreen = true;
 
@@ -84,8 +85,20 @@ setupInputComposer(){
 
   render(delta){
     this.inputComposer.render( delta ); // render to inputTarget
+    // this.inputComposer.swapBuffers();
     this.intermediateComposer.render( delta ); // render to intermediateTarget
-    this.inputComposer.swapBuffers();
+
+
+    //target pingpong
+    let tempTarget = this.interTarget;
+    this.interTarget = this.outputTarget;
+    this.outputTarget = tempTarget;
+
+    this.feedbackUniforms.tex0.value = this.interTarget.texture;
+    this.outputQuad.material.map = this.outputTarget.texture;
+    // this.interComposer.swapBuffers();
+    // this.intermediateTarget.texture.needsUpdate = true;
+    this.shader_feedback.uniforms.tex0.value = this.intermediateTarget.texture;
 
     this.finalComposer.render( delta );
   }
